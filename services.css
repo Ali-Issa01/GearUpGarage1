@@ -1,0 +1,164 @@
+/* Our Services Title */
+#section-title {
+    font-size: 3rem; /* Make the title bigger */
+    font-weight: bold; /* Bold text */
+    color: hsl(1, 91%, 37%); /* Red color */
+    margin-bottom: 10px; /* Add some spacing below the title */
+    text-align: center; /* Ensure the title is centered */
+  }
+  
+  /* Subtitle */
+  .section-subtitle {
+    font-size: 30px; /* Smaller font size */
+    font-weight: normal; /* Normal font weight */
+    color: #000; /* Black color */
+    margin-top: 5px; /* Adjust spacing above the subtitle */
+    text-align: center; /* Ensure the subtitle is centered */
+  }
+  
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-title {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .card-text {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .btn-danger {
+    background-color: #e63946;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    text-transform: uppercase;
+  }
+  
+  .btn-danger:hover {
+    background-color: #d32f2f;
+  }
+
+  /* Header Styles */
+.header {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    background-color: hsl(222, 44%, 14%); /* Solid dark background for consistency */
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  }
+  
+  .header .logo img {
+    width: 250px;
+    padding-right: 50px;
+    justify-content: left;
+  }
+  
+  .navbar {
+    display: flex;
+    gap: 40px;
+    justify-content: flex-start;
+    flex-grow: 1;
+  }
+  
+  .navbar-link {
+    text-transform: uppercase;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 25px;
+    font-weight: 600;
+    color: hsl(0, 0%, 100%);
+    transition: color 0.2s;
+  }
+  
+  .navbar-link.active {
+    color: hsl(1, 91%, 37%);
+    font-weight: bold;
+  }
+  
+  .navbar-link:hover {
+    color: hsl(1, 91%, 37%);
+  }
+  
+  .btn-primary {
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background-color: hsl(1, 91%, 37%);
+    color: hsl(0, 0%, 100%);
+    font-family: 'Chakra Petch', sans-serif;
+    text-transform: uppercase;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    transition: background-color 0.3s, transform 0.3s;
+  }
+  
+  .btn-primary:hover {
+    background-color: hsl(222, 50%, 11%);
+    transform: translateY(-3px);
+  }
+  
+  /* Dropdown Styles */
+  #profileDropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #profileDropdown i,
+  #profileDropdown svg,
+  #profileDropdown .material-symbols-rounded {
+    font-size: 60px;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 5px;
+  }
+  
+  .dropdown-menu {
+    margin-top: 10px;
+    min-width: 180px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    background-color: #222; /* Match navbar background */
+  }
+  
+  /* Dropdown Items */
+  .dropdown-item {
+    padding: 10px 15px;
+    color: #fff;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+  
+  .dropdown-item.text-danger {
+    color: #e63946;
+    font-weight: bold;
+  }
+  
+  .dropdown-item.text-danger:hover {
+    background-color: #ffe5e5;
+    color: #d32f2f;
+  }
+  
+  
