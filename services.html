@@ -264,7 +264,7 @@
 
 
 <!-- Appointment Success Modal -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+<div class="modal fade booked-window" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
 
@@ -441,7 +441,7 @@ document.getElementById('serviceRequestForm').addEventListener('submit', async (
     if (response.ok) {
       const successModal = new bootstrap.Modal(document.getElementById('successModal'));
       successModal.show();
-      
+      clearForm();
     } else {
       alert(`Error: ${data.error}`);
     }
@@ -449,8 +449,26 @@ document.getElementById('serviceRequestForm').addEventListener('submit', async (
     console.error('Error booking appointment:', error);
     alert('An error occurred. Please try again.');
   }
+  
 });
+function clearForm() {
+  const form = document.getElementById('serviceRequestForm');
+  Array.from(form.elements).forEach((element) => {
+    if (element.id !== 'serviceType' && element.type !== 'hidden') {
+      element.value = ''; // Clear the value
+    }
+  });
 
+  // Reset dropdowns to their default state
+  document.getElementById('garage').selectedIndex = 0;
+  document.getElementById('timeSlot').selectedIndex = 0;
+  document.getElementById('carCondition').selectedIndex = 0;
+  document.getElementById('carYear').selectedIndex = 0;
+
+  // Keep the serviceType field value intact
+  const serviceType = document.getElementById('serviceType');
+  console.log(`Retained service type: ${serviceType.value}`);
+}
 
 
 

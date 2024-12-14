@@ -207,7 +207,7 @@
   width : 200px
 }
 .modal-dialog {
-  max-width: 800px; /* Adjust the width as needed */
+  max-width: 800px; 
   width: 90%; /* Optional: makes it responsive */
 }
 
@@ -220,7 +220,6 @@
 .dropdown-menu {
   min-width: 200px; /* Adjust the dropdown width if needed */
 }
-
 
 #successModal .modal-title {
   font-size: 1.5rem;
