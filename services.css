@@ -129,36 +129,107 @@
     margin-bottom: 5px;
   }
   
-  .dropdown-menu {
-    margin-top: 10px;
-    min-width: 180px;
-    border-radius: 8px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    font-size: 16px;
-    background-color: #222; /* Match navbar background */
-  }
+  * Adjust dropdown icon */
+#profileDropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#profileDropdown i, #profileDropdown svg, #profileDropdown .material-symbols-rounded {
+  font-size: 60px; /* Large icon */
+  color: white; /* White color */
+  cursor: pointer;
+  margin-bottom: 5px; /* Space between icon and dropdown */
+}
+
+
+
+
+.dropdown-menu {
+  margin-top: 10px; /* Slightly move dropdown below the icon */
+  min-width: 150px; /* Define a reasonable dropdown width */
+}
+
+/* Enlarge the dropdown menu */
+.dropdown-menu {
+  padding: 10px; /* Add padding to the dropdown */
+  min-width: 180px; /* Adjust the width */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow for a modern look */
+  font-size: 16px; /* Increase text size */
+}
+
+/* Style dropdown items */
+.dropdown-item {
+  padding: 10px 15px; /* Add spacing inside items */
+  color: #333; /* Darker text color */
+  font-weight: 500; /* Slightly bold */
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect on dropdown items */
+.dropdown-item:hover {
+  background-color: #f0f0f0; /* Light gray background on hover */
+  color: #000; /* Black text on hover */
+}
+
+/* Style the "Logout" button specifically */
+.dropdown-item.text-danger {
+  color: #e63946; /* Red text */
+  font-weight: bold; /* Make it stand out */
+}
+
+.dropdown-item.text-danger:hover {
+  background-color: #ffe5e5; /* Soft red background on hover */
+  color: #d32f2f; /* Darker red text on hover */
+}
+  /* Custom Modal Styles */
+.modal-content {
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  font-family: 'Chakra Petch', sans-serif;
+  color: hsl(1, 91%, 37%);
+  font-weight: bold;
+}
+
+.modal-footer .btn {
+  border-radius: 30px;
+  padding: 10px 20px;
+}
+.modal-footer .btn-secondary {
   
-  /* Dropdown Items */
-  .dropdown-item {
-    padding: 10px 15px;
-    color: #fff;
-    font-weight: 500;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-  
-  .dropdown-item:hover {
-    background-color: #f0f0f0;
-    color: #000;
-  }
-  
-  .dropdown-item.text-danger {
-    color: #e63946;
-    font-weight: bold;
-  }
-  
-  .dropdown-item.text-danger:hover {
-    background-color: #ffe5e5;
-    color: #d32f2f;
-  }
-  
-  
+  border-radius: 30px;
+  padding: 10px 20px;
+  width : 200px
+}
+.modal-dialog {
+  max-width: 800px; /* Adjust the width as needed */
+  width: 90%; /* Optional: makes it responsive */
+}
+
+#uniqueProfileDropdown i {
+  font-size: 55px; /* Adjust icon size */
+  color: white; /* Ensure consistent color */
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  min-width: 200px; /* Adjust the dropdown width if needed */
+}
+
+
+#successModal .modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+}
+
+#successModal .modal-body {
+  font-size: 1.2rem;
+  color: #555;
+}
+

@@ -104,6 +104,76 @@ app.post('/api/login', async (req, res) => {
 
 
 
+// Route to handle appointment bookings
+app.post('/api/appointments', async (req, res) => {
+    const {
+      carModel,
+      modelYear,
+      carCondition,
+      appointmentDay,
+      timeSlot,
+      garage,
+      serviceType,
+      userId
+    } = req.body;
+  
+    try {
+      // Step 1: Insert into the customer_car table
+      const [carResult] = await db.query(
+        'INSERT INTO customer_car (user_id, model, model_year, car_condition) VALUES (?, ?, ?, ?)',
+        [userId, carModel, modelYear, carCondition]
+      );
+  
+      const customerCarId = carResult.insertId; // Get the inserted customer car ID
+  
+      // Step 2: Insert into the appointment table
+      await db.query(
+        'INSERT INTO appointment (user_id, customer_car_id, appointment_date, time_slot, garage, service_type) VALUES (?, ?, ?, ?, ?, ?)',
+        [userId, customerCarId, appointmentDay, timeSlot, garage, serviceType]
+      );
+  
+      // Success response
+      res.status(201).json({ message: 'Appointment booked successfully!' });
+    } catch (error) {
+      console.error('Database Error:', error);
+      res.status(500).json({ error: 'Failed to book appointment', details: error.message });
+    }
+  });
+
+
+
+//Sending time slots to the service page
+app.get('/api/booked-time-slots', async (req, res) => {
+    const { appointmentDate, garage } = req.query;
+  
+    try {
+      const [rows] = await db.query(
+        'SELECT time_slot FROM appointment WHERE appointment_date = ? AND garage = ?',
+        [appointmentDate, garage]
+      );
+  
+      const bookedSlots = rows.map((row) => row.time_slot); // Extract time slots
+      res.status(200).json(bookedSlots);
+    } catch (error) {
+      console.error('Error fetching booked slots:', error);
+      res.status(500).json({ error: 'Failed to fetch booked slots' });
+    }
+  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
