@@ -117,6 +117,21 @@
     font-weight: bold;
   }
   
+  /* Red Danger Button */
+#addServiceBtn {
+    margin-top: 20px;
+    width: 150px;
+}
+
+/* Modal Styling */
+.modal-header {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-body {
+    padding: 20px;
+}
   table {
     width: 100%;
     border-collapse: collapse;

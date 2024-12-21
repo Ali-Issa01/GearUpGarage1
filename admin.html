@@ -164,8 +164,43 @@
                   <!-- Rows will be dynamically populated -->
                 </tbody>
               </table>
+            <!-- Add Service Button -->
+    <div class="add-service-button-container">
+        <button id="addServiceBtn" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+          Add Service
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal for Adding Service -->
+  <div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addServiceModalLabel">Add New Service</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addServiceForm">
+            <div class="mb-3">
+              <label for="serviceName" class="form-label">Service Name</label>
+              <input type="text" class="form-control" id="serviceName" placeholder="Enter service name" required>
             </div>
-          </div>
+            <div class="mb-3">
+              <label for="servicePrice" class="form-label">Price</label>
+              <input type="number" class="form-control" id="servicePrice" placeholder="Enter service price" required>
+            </div>
+            <div class="mb-3">
+              <label for="serviceDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="serviceDescription" rows="3" placeholder="Enter service description" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-danger">Add Service</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
     
           <!-- Card 6: Contracts -->
           <div class="card">
@@ -293,18 +328,79 @@
                 <td>${appointment.car_model} (${appointment.car_year})</td>
                 <td style="color: ${statusColor}; font-weight: bold;">${appointment.status}</td>
                 <td>
-                    <button class="btn ${buttonClass} btn-sm action-button">${buttonLabel}</button>
+                    <button class="btn ${buttonClass} btn-sm action-button data-id="${appointment.appointment_id}">${buttonLabel}</button>
                 </td>
                 `
                 tablebody.appendChild(row);
                 });
          }
 
-         // Call the function on page load
-        document.addEventListener('DOMContentLoaded', fetchappointment);
+                            // Call the function on page load
+                            document.addEventListener('DOMContentLoaded', () => {
+                    const tableBody = document.getElementById('appointmentsTable');
+
+                    // Fetch appointments and populate the table
+                    fetchappointment();
+
+                    // Event delegation for Remove and Cancel buttons
+                    tableBody.addEventListener('click', async (event) => {
+                        const target = event.target;
+
+                        // Check if the clicked element is a Remove or Cancel button
+                        if (target.classList.contains('remove-button') || target.classList.contains('cancel-button')) {
+                            const row = target.closest('tr');
+                            const appointmentId = row.querySelector('td').textContent.trim();
+                            console.log('Appointment ID:', appointmentId);
+
+                                 try {
+                                const response = await fetch('http://127.0.0.1:5000/api/appointments-admin/remove', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ appointment_id: appointmentId }),
+                                });
+
+                                if (response.ok) {
+                                    // Remove row from the table
+                                row.remove();
+                                alert('Appointment removed successfully.');
+                                }
+
+                                
+                            } catch (error) {
+                                console.error('Error removing appointment:', error);
+                                alert('An error occurred while processing the request.');
+                            }
+                        }
+                    });
+                    });
 
 
 
+
+
+        document.querySelectorAll('.action-button').forEach(button => {
+    button.addEventListener('click', async (event) => {
+      const appointmentId = event.target.getAttribute('data-id');
+      const action = event.target.innerText.toLowerCase(); // 'remove' or 'cancel'
+
+      try {
+        const response = await fetch(`/api/appointments/${appointmentId}`, {
+          method: 'DELETE',
+        });
+
+        if (response.ok) {
+          event.target.closest('tr').remove();
+          alert(`Appointment ${action}ed successfully.`);
+        } else {
+          alert(`Failed to ${action} appointment.`);
+        }
+      } catch (error) {
+        console.error(`Error ${action}ing appointment:`, error);
+        alert(`An error occurred while ${action}ing the appointment.`);
+      }
+    });
+  });
+    
 
 
 
@@ -367,6 +463,49 @@
 
          
 
+
+
+
+        //Adding a service 
+
+                document.getElementById('addServiceForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const serviceName = document.getElementById('serviceName').value.trim();
+            const servicePrice = parseFloat(document.getElementById('servicePrice').value);
+            const serviceDescription = document.getElementById('serviceDescription').value.trim();
+
+            // Validate input
+            if (!serviceName || isNaN(servicePrice) || !serviceDescription) {
+                alert('Please fill out all fields correctly.');
+                return;
+            }
+
+            // Send POST request to backend
+            try {
+                const response = await fetch('/api/services', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name: serviceName,
+                        price: servicePrice,
+                        description: serviceDescription,
+                    }),
+                });
+
+                if (response.ok) {
+                    alert('Service added successfully!');
+                    location.reload(); // Reload the page to reflect changes
+                } else {
+                    alert('Failed to add service. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error adding service:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
 
 
       </script>

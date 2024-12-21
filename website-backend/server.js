@@ -50,7 +50,7 @@ app.post('/api/signin', async (req, res) => {
 
         res.status(201).json({
             message: 'Signed in successfully!',
-            userId: user_id,
+            
         });
     } catch (error) {
         // Check if the error is a duplicate entry error
@@ -143,7 +143,7 @@ app.post('/api/appointments', async (req, res) => {
 
 //Sending time slots to the service page
 app.get('/api/booked-time-slots', async (req, res) => {
-    const { appointmentDate, garage } = req.query;
+    const { appointmentDate, garage } = req.body;
   
     try {
       const [rows] = await db.query(
@@ -182,6 +182,8 @@ app.get('/api/appointments-admin', async (req, res) => {
               user u ON a.user_id = u.user_id
           JOIN 
               customer_car c ON a.customer_car_id = c.car_id
+         
+           
       `;
       const [rows] = await db.query(query);
       res.json(rows);
@@ -232,17 +234,63 @@ app.get('/api/appointments-admin', async (req, res) => {
 
 
           //Removing the appointment upon admin request
-
-
-          app.delete('/api/appointments/:id', async (req, res) => {
-            try {
-                const { id } = req.params;
-                await db.query('DELETE FROM appointment WHERE appointment_id = ?', [id]);
-                res.status(200).json({ message: 'Appointment removed successfully' });
-            } catch (error) {
-                console.error('Error removing appointment:', error);
-                res.status(500).json({ error: 'Failed to remove appointment' });
+          
+          // DELETE appointment route
+          app.post('/api/appointments-admin/remove', async (req, res) => {
+            const { appointment_id } = req.body; // Extract ID from request body
+        
+            if (!appointment_id) {
+                return res.status(400).send({ error: 'Appointment ID is required.' });
             }
+        
+            try {
+                const result = await db.query('DELETE FROM appointment WHERE appointment_id = ?', [appointment_id]);
+                if (result.affectedRows === 0) {
+                  return res.status(404).json({ message: 'Appointment not found' });
+              }
+      
+              res.status(200).json({ message: 'Appointment deleted successfully' });
+            } catch (error) {
+                console.error('Error deleting appointment:', error);
+                res.status(500).send({ error: 'Internal Server Error.' });
+            }
+        });
+
+
+
+        //Adding a service from the admin panel
+
+        app.post('/api/services', async (req, res) => {
+          const { name, price, description } = req.body;
+      
+          // Validate input
+          if (!name || !price || !description) {
+              return res.status(400).json({ message: 'All fields are required' });
+          }
+      
+          try {
+              const query = `INSERT INTO services (service_name, price, description) VALUES (?, ?, ?)`;
+              await db.query(query, [name, price, description]);
+              res.status(201).json({ message: 'Service added successfully' });
+          } catch (error) {
+              console.error('Error adding service:', error);
+              res.status(500).json({ message: 'Failed to add service' });
+          }
+      });
+
+
+
+      //Getting services information
+
+      // Route to fetch all services
+        app.get('/api/services', async (req, res) => {
+          try {
+            const [services] = await db.execute('SELECT service_name, price, description FROM Service');
+            res.status(200).json(services);
+          } catch (error) {
+            console.error('Error fetching services:', error);
+            res.status(500).json({ error: 'Failed to fetch services' });
+          }
         });
 
 

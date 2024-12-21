@@ -63,10 +63,14 @@ body {
   transition: color 0.2s;
 }
 
-.navbar-link:hover {
-  color: hsl(1, 91%, 37%);
-}
-
+.navbar-link.active {
+    color: hsl(1, 91%, 37%);
+    font-weight: bold;
+  }
+  
+  .navbar-link:hover {
+    color: hsl(1, 91%, 37%);
+  }
 .btn-primary {
   font-size: 30px;
   display: flex;
@@ -242,9 +246,73 @@ body {
   }
 
 
+ /* About Us Section */
+.about-us {
+  
+  background-color: hsl(222, 44%, 14%); /* Navy blue background */
+  color: hsl(0, 0%, 100%); /* White text */
+  
+  padding: 200px; /* Increased padding for a taller section */
+  height : 700px
+  
+}
+
+.about-us .section-title {
+  color: hsl(1, 91%, 37%); /* Red title */
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 80px; /* Larger font size */
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.about-us .section-description {
+  font-family: 'Mulish', sans-serif;
+  font-size: 20px; /* Slightly larger font size */
+  text-align: center;
+  margin-bottom: 60px;
+}
+.about-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* Increased gap between blocks */
+  flex-wrap: wrap;
+}
+
+.stat-block {
+  background-color: hsl(222, 50%, 20%); /* Slightly lighter navy for blocks */
+  color: hsl(0, 0%, 100%);
+  border-radius: 8px;
+  text-align: center;
+  padding: 40px 20px; /* Increased padding for taller blocks */
+  width: 240px; /* Wider blocks */
+  transition: transform 0.3s ease-in-out;
+}
+
+.stat-block h3 {
+  font-size: 2.5rem; /* Larger numbers */
+  font-family: 'Chakra Petch', sans-serif;
+  color: hsl(0, 0%, 100%); /* White for numbers */
+}
+
+.stat-block p {
+  font-family: 'Mulish', sans-serif;
+  font-size: 18px; /* Larger font size for description */
+}
+
+.stat-block:hover {
+  transform: translateY(-5px); /* Hover effect for better interactivity */
+  background-color: hsl(222, 50%, 25%); /* Slightly lighter navy on hover */
+}
+
  /* Services Section */
 .service {
-    padding: 80px 0; /* Add padding to the section */
+    padding: 100px 100px; /* Add padding to the section */
     text-align: center; /* Center-align the text */
     height: 90vh;
     align-items: center;
@@ -291,7 +359,8 @@ body {
     gap: 20px; /* Space between cards */
     list-style: none; /* Remove default list styles */
     padding: 0;
-     align-items: stretch;
+    align-items: stretch;
+   
   }
   .service-container{
     display: flex;
