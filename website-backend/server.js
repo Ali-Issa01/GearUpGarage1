@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const db = require('./db'); // Import the database connection
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 
 const app = express();
@@ -39,14 +40,12 @@ app.post('/api/signin', async (req, res) => {
             return res.status(400).json({ error: 'Email already used' }); // Return a user-friendly message
         }
 
-        // Get the current count of users to generate a new user_id
-        const [rows] = await db.query('SELECT COUNT(*) AS count FROM user');
-        const user_id = rows[0].count + 1;
-
+        
+        const hashedPassword = await bcrypt.hash(password, 10); 
         // Insert the new user into the database
         const [result] = await db.query(
             'INSERT INTO user (name, email, password, phone) VALUES (?, ?, ?, ?)',
-            [name, email, password, phone_number]
+            [name, email, hashedPassword, phone_number]
         );
 
         res.status(201).json({
@@ -83,8 +82,8 @@ app.post('/api/login', async (req, res) => {
         }
 
         const user = rows[0];
-
-        if (user.password !== password) {
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid email or password!' });
         }
         // Successful login: Return user details
@@ -160,6 +159,91 @@ app.get('/api/booked-time-slots', async (req, res) => {
     }
   });
 
+  //Admin Panel
+
+
+  // Sending appointments informations to the admin
+app.get('/api/appointments-admin', async (req, res) => {
+  try {
+      const query = `
+          SELECT 
+              a.appointment_id, 
+              a.appointment_date, 
+              a.time_slot, 
+              a.service_type, 
+              a.status,
+              u.name AS customer_name, 
+              u.phone AS customer_phone, 
+              c.model AS car_model, 
+              c.model_year AS car_year 
+          FROM 
+              appointment a
+          JOIN 
+              user u ON a.user_id = u.user_id
+          JOIN 
+              customer_car c ON a.customer_car_id = c.car_id
+      `;
+      const [rows] = await db.query(query);
+      res.json(rows);
+  } catch (error) {
+      console.error('Error fetching appointments:', error);
+      res.status(500).json({ error: 'Failed to fetch appointments' });
+  }
+});
+
+
+
+
+      //Sending user informations
+  app.get('/api/users-admin', async(req,res)=>{
+
+        try{
+          const query = `SELECT user_id, name, email, phone FROM user`;
+
+          const[rows] = await db.query(query);
+          
+          res.json(rows);
+        } catch (error) {
+          console.error('Error fetching users:', error);
+          res.status(500).json({ error: 'Failed to fetch users' });
+        }
+      
+
+      });
+
+         //Sending customer cars informations
+          app.get('/api/customerCar-admin', async(req,res)=>{
+
+            try{
+              const query = `SELECT car_id,u.name as owner, model, model_year, car_condition FROM user u NATURAL JOIN customer_car`;
+
+              const[rows] = await db.query(query);
+              
+              res.json(rows);
+            } catch (error) {
+              console.error('Error fetching users:', error);
+              res.status(500).json({ error: 'Failed to fetch users' });
+            }
+          
+
+          });
+
+
+
+
+          //Removing the appointment upon admin request
+
+
+          app.delete('/api/appointments/:id', async (req, res) => {
+            try {
+                const { id } = req.params;
+                await db.query('DELETE FROM appointment WHERE appointment_id = ?', [id]);
+                res.status(200).json({ message: 'Appointment removed successfully' });
+            } catch (error) {
+                console.error('Error removing appointment:', error);
+                res.status(500).json({ error: 'Failed to remove appointment' });
+            }
+        });
 
 
 
